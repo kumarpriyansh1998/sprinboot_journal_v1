@@ -30,7 +30,9 @@ public class adminController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
+
+//	hello
 	@PostMapping("/add-admin")
 	public void addAdmin(@RequestBody userEntity adminuser) {
 		user.addadmin(adminuser);
