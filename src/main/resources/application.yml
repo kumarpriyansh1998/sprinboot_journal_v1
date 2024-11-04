@@ -10,5 +10,7 @@ spring:
   main:
     allow-circular-references: true
 
+
+
 server:
   port: 8081

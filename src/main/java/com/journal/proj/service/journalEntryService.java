@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,10 @@ import org.bson.types.ObjectId;
 
 @Component
 public class journalEntryService {
-	
+
+
+
+
 	@Autowired
 	private mongoServiceInterfaceRepo mongoService;
 	
@@ -26,6 +31,8 @@ public class journalEntryService {
 	
 	@Transactional
 	public boolean addEntry(journalEntity entry,String username) {
+
+
 		entry.setDate(LocalDateTime.now());
 		userEntity cur_user = user.findUserByName(username); 
 		journalEntity saved  = mongoService.save(entry);
