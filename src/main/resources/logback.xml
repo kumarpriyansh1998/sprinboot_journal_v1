@@ -26,7 +26,7 @@
 
 
     <root level="INFO">
-        <appender-ref ref="myFilelog"></appender-ref>
-<!--        <appender-ref ref="myConsoleLog"></appender-ref>-->
+        <appender-ref ref="myFileLog"/>
+        <appender-ref ref="myConsoleLog"></appender-ref>
     </root>
 </configuration>

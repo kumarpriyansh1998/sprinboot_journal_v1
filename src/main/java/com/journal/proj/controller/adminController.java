@@ -2,6 +2,7 @@ package com.journal.proj.controller;
 
 import java.util.List;
 
+import com.journal.proj.cache.appCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,11 @@ public class adminController {
 	
 	@Autowired
 	private userService user;
+
+
+
+	@Autowired
+	private appCache appcache;
 	
 	@GetMapping("/all-users")
 	public ResponseEntity<?> getAllUsers() {
@@ -36,6 +42,12 @@ public class adminController {
 	@PostMapping("/add-admin")
 	public void addAdmin(@RequestBody userEntity adminuser) {
 		user.addadmin(adminuser);
+	}
+
+
+	@GetMapping("/reload-cache")
+	public void reloadCache(){
+		appcache.init();
 	}
 
 }

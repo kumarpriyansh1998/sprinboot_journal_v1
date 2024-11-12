@@ -3,6 +3,10 @@ package com.journal.proj.service;
 import java.util.Arrays;
 import java.util.List;
 
+import com.journal.proj.serviceInterface.userRepoImpl;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +20,16 @@ import com.journal.proj.serviceInterface.mongoServiceInterfaceUserRepo;
 
 @Component
 @Slf4j
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class userService {
 	
 	@Autowired
 	private mongoServiceInterfaceUserRepo user;
+
+	@Autowired
+	private userRepoImpl userrepoimpl;
 
 	private static final Logger logger = LoggerFactory.getLogger(userService.class);
 	
@@ -51,9 +61,16 @@ public class userService {
 		user.delete(userentity);
 		return true;
 	}
+
 	
 	public userEntity findUserByName(String username) {
 		return user.findByUsername(username);
 	}
+
+
+	public List<userEntity> getUsetForSA(){
+		return userrepoimpl.getUserForSA();
+	}
+
 	
 }

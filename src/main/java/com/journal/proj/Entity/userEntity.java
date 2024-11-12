@@ -28,5 +28,6 @@ public class userEntity {
 	@DBRef
 	private List<journalEntity> journalentries = new ArrayList<>();
 	private List<String> roles;
-
+	private String email;
+	private boolean receiveSentimentEmail;
 }
