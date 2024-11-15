@@ -23,7 +23,7 @@ public class RedisService {
             String jsonString = mapper.writeValueAsString(o);
             redisTemplate.opsForValue().set(category,jsonString,ttl, TimeUnit.SECONDS);
         }catch (Exception e){
-            log.error("Exception e");
+            log.error("Exception"+e);
         }
     }
 
