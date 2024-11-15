@@ -40,13 +40,13 @@ public class quotesService {
     @Autowired
     private appCache appcache;
 
+    @Autowired
+    private RedisService redisService;
+
 
 
 
     public quoteResponse getQuote(String category) throws IOException, InterruptedException {
-
-
-
 
 //        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(api_url)).header("X-Api-Key", api_key).build();
 //        HttpClient client = HttpClient.newBuilder().build();
@@ -57,15 +57,21 @@ public class quotesService {
 //        return quotes.size()>0?quotes.get(0):null;
 
 
+        quoteResponse o  = redisService.get(category,quoteResponse.class);
+        if(o==null){
+            HttpHeaders headers = new HttpHeaders();
+            String api_key= appcache.config_cache.get(appCache.keys.API_KEY.toString());
+            headers.set("X-Api-Key", api_key);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            String api_uri = appcache.config_cache.get(appCache.keys.QUOTES_API.toString());
+            ResponseEntity<quoteResponse[]> response = restTemplate.exchange(api_uri, HttpMethod.GET, entity, quoteResponse[].class);
+            if(response!=null) redisService.set(category,response.getBody()[0],10l);
+            return response.getBody() != null ? response.getBody()[0] : null;
+        }else{
+            return o;
+        }
 
-        HttpHeaders headers = new HttpHeaders();
-        String api_key= appcache.config_cache.get(appCache.keys.QUOTES_API_KEY.toString());
-        headers.set("X-Api-Key", api_key);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        String api_uri = appcache.config_cache.get(appCache.keys.QUOTES_API.toString());
 
-        ResponseEntity<quoteResponse[]> response = restTemplate.exchange(api_uri, HttpMethod.GET, entity, quoteResponse[].class);
-        return response.getBody() != null ? response.getBody()[0] : null;
 
 
 
@@ -81,7 +87,6 @@ public class quotesService {
 //        User user = (User) User.builder().username("utkarsh").password("123").build();
 //        HttpEntity<User> entity1 = new HttpEntity<>(user,headers1);
 //        ResponseEntity<quoteResponse[]> response1 = restTemplate.exchange(api_url, HttpMethod.POST, entity1, quoteResponse[].class);
-
 
 
 

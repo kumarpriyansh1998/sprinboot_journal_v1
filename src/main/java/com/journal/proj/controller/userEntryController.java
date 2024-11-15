@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.journal.proj.api.response.quoteResponse;
-import com.journal.proj.service.emailService;
-import com.journal.proj.service.quotesService;
+import com.journal.proj.scheduler.userMailScheduler;
+import com.journal.proj.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.journal.proj.Entity.journalEntity;
 import com.journal.proj.Entity.userEntity;
-import com.journal.proj.service.journalEntryService;
-import com.journal.proj.service.userService;
 
 @RestController
 @RequestMapping("/user")
@@ -105,15 +103,26 @@ public class userEntryController {
 	@Autowired
 	private emailService email;
 
-	@GetMapping("send-mail")
-	public void sendMail(String to,String subject,String body){
+//	@GetMapping("send-mail")
+//	public void sendMail(String to,String subject,String body){
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		List<userEntity> user_list = user_service.getUsetForSA();
+//		for(userEntity ele:user_list){
+//			String _to = ele.getEmail();
+//			email.sendEmail(_to,"Greetings from Priyansh's Journal App","Hello. Thanks for subscribing for email notification");
+//		}
+//	}
+
+	@Autowired
+	private userMailScheduler sentimentservice;
+
+	@GetMapping("/send-mail")
+	public ResponseEntity<?> trigger_mail(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		List<userEntity> user_list = user_service.getUsetForSA();
-		for(userEntity ele:user_list){
-			String _to = ele.getEmail();
-			email.sendEmail(_to,"Greetings from Priyansh's Journal App","Hello. Thanks for subscribing for email notification");
-		}
+		return new ResponseEntity<>(sentimentservice.fetchUserAndSendMail(),HttpStatus.OK);
 	}
+
+
 	
 	
 	

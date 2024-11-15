@@ -15,7 +15,8 @@ public class appCache {
 
     public enum keys{
         QUOTES_API,
-        QUOTES_API_KEY
+        API_KEY,
+        SENTIMENT_API
     }
 
 
