@@ -1,10 +1,13 @@
 package com.journal.proj.config;
 
+import com.journal.proj.filter.jwtFilters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -15,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.journal.proj.service.userDetailServiceImpl;
 import com.journal.proj.service.userService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -23,6 +27,9 @@ public class SpringSecurity {
 	
 	@Autowired
 	private userDetailServiceImpl userdetailservice;
+
+	@Autowired
+	private jwtFilters jwtfilter;
 	
 	@Bean
 	public SecurityFilterChain securityfilterchain(HttpSecurity http) throws Exception{
@@ -31,8 +38,8 @@ public class SpringSecurity {
 				.requestMatchers("/journal/**","/user/**").authenticated()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated())
-				.httpBasic(Customizer.withDefaults())
 				.csrf(AbstractHttpConfigurer::disable)
+				.addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 				
 	}
@@ -47,6 +54,11 @@ public class SpringSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
+		return auth.getAuthenticationManager();
+	}
 
 	
 }
