@@ -1,0 +1,29 @@
+spring:
+  redis:
+    host: ${REDIS_URI}
+    port: 18655
+    password: ${REDIS_PASS}
+  application:
+    name: journal application
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-circular-references: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL}
+    password: ${PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
