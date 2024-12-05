@@ -23,7 +23,10 @@ public class jwtFilters extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
+    @AutowirrequestMatchers(
+                "/public/**", "/",
+                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html"
+            ).permitAll()ed
     private jwtUtils jwtUtil;
 
     @Override
